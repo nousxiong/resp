@@ -1,34 +1,28 @@
 # resp
-=======
 
 RESP(REdis Serialization Protocol) C++ Implementation
 
 # Features
----------------
 
 * RESP C++03(currently, future will add a C++11 branch) Implementation.
 * No other dependencies.
 * Header only.
 
 # Supported Compilers
----------------
 
 * GCC >= 4.6 (include MinGW).
 * VC >= 9.0.
 
 # How to use
----------------
 
 Just include resp directory to your project.
 
 # CMake Options
----------------
 
 * RESP_BUILD_TEST: build resp's unit tests, default ON.
 * RESP_BUILD_EXAMPLE: build resp's examples, default ON.
 
 # Encode
----------------
 
 ```cpp
 #include <resp/all.hpp>
@@ -51,7 +45,6 @@ int main()
 ```
 
 # Decode
----------------
 
 ```cpp
 #include <resp/all.hpp>
@@ -78,6 +71,5 @@ int main()
 ```
 
 # Other examples
----------------
 
 Look for resp/examples.
