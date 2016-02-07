@@ -152,10 +152,31 @@ public:
   class command
   {
   public:
+    command()
+       : enc_(0)
+    {
+    }
+    
     command(self_t& enc, buffer_t const& name)
-      : enc_(enc)
+      : enc_(&enc)
       , name_(name)
     {
+    }
+    
+    command(command const& other)
+      : enc_(other.enc_)
+      , name_(other.name_)
+    {
+    }
+    
+    command& operator=(command const& rhs)
+    {
+      if (this != &rhs)
+      {
+        enc_ = rhs.enc_;
+        name_ = rhs.name_;
+      }
+      return *this;
     }
 
     ~command()
@@ -165,21 +186,23 @@ public:
   public:
     command& arg(buffer_t const& a)
     {
-      enc_.queued_buffer(a);
+      assert(enc_ != 0);
+      enc_->queued_buffer(a);
       return *this;
     }
 
     self_t& end()
     {
-      std::vector<buffer_t>& buffers = enc_.get_buffers();
-      std::vector<buffer_t>& args = enc_.get_cmd_args();
+      assert(enc_ != 0);
+      std::vector<buffer_t>& buffers = enc_->get_buffers();
+      std::vector<buffer_t>& args = enc_->get_cmd_args();
       self_t::encode(buffers, name_, args);
       args.clear();
-      return enc_;
+      return *enc_;
     }
 
   private:
-    self_t& enc_;
+    self_t* enc_;
     buffer_t name_;
   };
 
