@@ -81,4 +81,38 @@ TEST_CASE("resp unique_value", "[unique_value]")
     REQUIRE(uv.array().size() == 0);
     REQUIRE(array.size() == 5);
   }
+
+  SECTION("unique_value copy")
+  {
+    resp::unique_array<resp::unique_value> array;
+    array.reserve(5);
+    array.push_back("simply string");
+    array.push_back(resp::unique_value("error", resp::ty_error));
+    array.push_back(1);
+    array.push_back(resp::unique_value("bulk string", resp::ty_bulkstr));
+    resp::unique_array<resp::unique_value> arr(2);
+    arr.push_back("simply str");
+    arr.push_back(2);
+    array.push_back(arr);
+
+    resp::unique_value src(array);
+    REQUIRE(array.size() == 0);
+    REQUIRE(src.type() == resp::ty_array);
+    REQUIRE(src);
+
+    resp::unique_value des;
+    resp::unique_value::copy(des, src);
+
+    REQUIRE(des.type() == resp::ty_array);
+    REQUIRE(des);
+    REQUIRE(src.type() == resp::ty_array);
+    REQUIRE(src);
+
+    REQUIRE(des.array()[0] == src.array()[0]);
+    REQUIRE(des.array()[1] == src.array()[1]);
+    REQUIRE(des.array()[2] == src.array()[2]);
+    REQUIRE(des.array()[3] == src.array()[3]);
+    REQUIRE(des.array()[4].array()[0] == src.array()[4].array()[0]);
+    REQUIRE(des.array()[4].array()[1] == src.array()[4].array()[1]);
+  }
 }

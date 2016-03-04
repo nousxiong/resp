@@ -41,6 +41,14 @@ public:
   {
   }
 
+  /// For copy use.
+  static void copy(result& des, result const& src)
+  {
+    des.ty_ = src.ty_;
+    des.size_ = src.size_;
+    unique_value::copy(des.val_, src.val_);
+  }
+
 public:
   /// Check result type.
   /**
@@ -54,6 +62,12 @@ public:
   bool operator!=(result_type ty) const
   {
     return ty_ != ty;
+  }
+
+  /// Get type.
+  result_type type() const
+  {
+    return ty_;
   }
 
   /// Decoded size.

@@ -113,6 +113,20 @@ public:
   {
   }
 
+  /// For copy use.
+  static void copy(unique_value& des, unique_value const& src)
+  {
+    des.ty_ = src.ty_;
+    des.integer_ = src.integer_;
+    des.str_ = src.str_;
+    des.array_.clear();
+    for (size_t i=0, size=src.array_.size(); i<size; ++i)
+    {
+      unique_value& uv = des.array_.emplace_back();
+      copy(uv, src.array_[i]);
+    }
+  }
+
   ~unique_value()
   {
   }
